@@ -1,0 +1,45 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args){
+        Solution solution = new Solution();
+        System.out.println(solution.letterCombinations("23"));
+    }
+}
+class Solution {
+    //全局变量，用于返回
+    ArrayList<String> list = new ArrayList<String>();
+    public List<String> letterCombinations(String digits) {
+        HashMap<Character, String> map = new HashMap<>();
+        map.put('2',"abc");
+        map.put('3',"def");
+        map.put('4',"ghi");
+        map.put('5',"jkl");
+        map.put('6',"mno");
+        map.put('7',"pqrs");
+        map.put('8',"tuv");
+        map.put('9',"wxyz");
+        //特判
+        if (digits==null||digits.length()==0){
+            return list;
+        }
+        backTrack(map,digits,0,new StringBuilder());
+        return list;
+    }
+
+    //直接套框架，细节上改改！
+    public void backTrack(HashMap<Character, String> map,String digits,int index,StringBuilder str){
+        if (index==digits.length()){
+            list.add(new String(str.toString()));
+            return;
+        }
+        String s=map.get(digits.charAt(index));
+        for (int i = 0; i <s.length(); i++) {
+            str.append(s.charAt(i));
+            backTrack(map, digits, index+1, str);
+            str.deleteCharAt(str.length()-1);
+        }
+    }
+}

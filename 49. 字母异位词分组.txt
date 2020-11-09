@@ -1,0 +1,37 @@
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        String[] str={ "tea",  "ate", "tan","nat", "bat","eat"};
+        Solution solution = new Solution();
+        System.out.println(solution.groupAnagrams(str));
+    }
+}
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List list = new ArrayList<>();
+        //特判
+        if (strs==null||strs.length==0){
+            return list;
+        }
+        //分类
+        HashMap<String, ArrayList<String>> map = new HashMap<>();
+        for (int i = 0; i < strs.length; i++) {
+            //字符串转字符数组
+            char[] tmp=strs[i].toCharArray();
+            Arrays.sort(tmp);
+            //字符数组转字符串
+            String str=String.valueOf(tmp);
+            if (!map.containsKey(str)){
+                map.put(str,new ArrayList());
+            }
+            map.get(str).add(strs[i]);
+        }
+        //return
+        for (ArrayList<String> value : map.values()) {
+            list.add(value);
+        }
+        return list;
+    }
+}
