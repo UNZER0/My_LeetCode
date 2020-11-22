@@ -1,0 +1,31 @@
+import java.security.Security;
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        int[] num = {2, 0, 2, 1, 1, 0};
+        Solution solution = new Solution();
+        solution.sortColors(num);
+        System.out.println(Arrays.toString(num));
+    }
+}
+
+class Solution {
+    public void sortColors(int[] nums) {
+        int[] num_copy=new int[nums.length];
+        Arrays.fill(num_copy,1);
+        //双指针法
+        int left=0;
+        int right=num_copy.length-1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i]==0){
+                num_copy[left++]=0;
+            }else if (nums[i]==2){
+                num_copy[right--]=2;
+            }
+        }
+        for (int i = 0; i < num_copy.length; i++) {
+            nums[i]=num_copy[i];
+        }
+    }
+}

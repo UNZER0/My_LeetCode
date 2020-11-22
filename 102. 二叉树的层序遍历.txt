@@ -1,0 +1,57 @@
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(3);
+        treeNode.left = new TreeNode(9);
+        treeNode.right = new TreeNode(20);
+        treeNode.right.left = new TreeNode(15);
+        treeNode.right.right = new TreeNode(7);
+        Solution solution = new Solution();
+        System.out.println(solution.levelOrder(treeNode));
+    }
+}
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
+}
+
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> lists = new ArrayList<>();
+        //特判
+        if (root == null) {
+            return lists;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        //使用两个队列
+        while (!queue.isEmpty()) {
+            ArrayList<Integer> list = new ArrayList<>();
+            int num = queue.size();
+            //遍历当前的一层
+            for (int i = 0; i < num; i++) {
+                //出队
+                TreeNode node = queue.poll();
+                //加入集合
+                list.add(node.val);
+                //左子树入队
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                //右子树入对
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            lists.add(new ArrayList<>(list));
+        }
+        return lists;
+    }
+}

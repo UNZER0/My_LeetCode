@@ -1,0 +1,25 @@
+class Solution {
+    boolean flag=true;
+    double pre=-Double.MAX_VALUE;
+    public boolean isValidBST(TreeNode root) {
+        if(root==null){
+            return flag;
+        }
+        traverse(root);
+        return flag;
+    }
+
+    public void traverse(TreeNode root){
+        if (!flag||root==null){
+            return;
+        }
+        traverse(root.left);
+        //如果当前节点小于前一个结点，false
+        if (root.val<=pre){
+            flag=false;
+        }
+        //更新遍历的前一个值
+        pre=root.val;
+        traverse(root.right);
+    }
+}

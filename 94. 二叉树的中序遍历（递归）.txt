@@ -1,0 +1,23 @@
+class Solution {
+    List<Integer> list = new ArrayList<Integer>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        //特判
+        if (root == null) {
+            return list;
+        }
+        dfs(root);
+        return list;
+    }
+
+    public void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        //遍历左子树
+        inorderTraversal(root.left);
+        //加入list
+        list.add(root.val);
+        //遍历右子树
+        inorderTraversal(root.right);
+    }
+}

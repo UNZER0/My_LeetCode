@@ -1,0 +1,33 @@
+import java.security.Security;
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        int[] num = {1,2,3,4};
+        Solution solution = new Solution();
+        System.out.println(solution.subsets(num));
+    }
+}
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        //初始条件
+        List<List<Integer>> lists = new ArrayList<>();
+        lists.add(new ArrayList<>());
+        //状态转移
+        for (int i = 0; i < nums.length; i++) {
+            //将新元素连接到list后边
+            //深拷贝
+            List<List<Integer>> lists_copy = new ArrayList<>();
+            for (int j = 0; j < lists.size(); j++) {
+                lists_copy.add(new ArrayList<>(lists.get(j)));
+            }
+            for (int j = 0; j < lists_copy.size(); j++) {
+                lists_copy.get(j).add(nums[i]);
+                //将list添加进lists中
+                lists.add(new ArrayList<>(lists_copy.get(j)));
+            }
+        }
+        return lists;
+    }
+}

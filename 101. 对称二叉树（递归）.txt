@@ -1,0 +1,53 @@
+class Main {
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(2);
+        treeNode.right = new TreeNode(2);
+        treeNode.left.left = new TreeNode(3);
+        treeNode.left.right = new TreeNode(4);
+        treeNode.right.left = new TreeNode(4);
+        treeNode.right.right = new TreeNode(3);
+        Solution solution = new Solution();
+        System.out.println(solution.isSymmetric(treeNode));
+    }
+}
+
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
+}
+
+class Solution {
+    boolean flag=true;
+    public boolean isSymmetric(TreeNode root) {
+        if (root==null){
+            return flag;
+        }
+        traverse(root,root);
+        return flag;
+    }
+
+    public void traverse(TreeNode root1,TreeNode root2) {
+        if (!flag||root1 == null||root2 == null) {
+            if(root1==null&&root2!=null){
+                flag=false;
+            }
+            if(root2==null&&root1!=null){
+                flag=false;
+            }
+            return;
+        }
+        if (root1.val!=root2.val){
+            flag=false;
+        }
+        //一个中左右，一个中右左
+        traverse(root1.left,root2.right);
+        traverse(root1.right,root2.left);
+    }
+}
