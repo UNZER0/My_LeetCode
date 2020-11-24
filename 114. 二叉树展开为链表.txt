@@ -1,0 +1,55 @@
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(2);
+        treeNode.right = new TreeNode(5);
+        treeNode.left.left = new TreeNode(3);
+        treeNode.left.right = new TreeNode(4);
+        treeNode.right.right = new TreeNode(6);
+        Solution solution = new Solution();
+        solution.flatten(treeNode);
+        while (treeNode!=null){
+            System.out.println(treeNode.val);
+            treeNode=treeNode.right;
+        }
+    }
+}
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
+}
+
+class Solution {
+    public void flatten(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        while (root!=null){
+            if (root.left==null&&root.right==null){
+                if (!stack.empty()){    //当栈还有结点
+                    root.right=stack.pop();
+                    root=root.right;
+                }else {     //当到达叶子节点，并且栈也为空时，结束
+                    return;
+                }
+            }else {     //只要有子树不为空，就继续执行下边的操作
+                if (root.left!=null){
+                    if (root.right!=null){
+                        stack.push(root.right);
+                        root.right=root.left;
+                    }else {
+                        root.right=root.left;
+                    }
+                }
+                root.left=null;
+                root=root.right;
+            }
+        }
+    }
+}

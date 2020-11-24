@@ -1,0 +1,77 @@
+import javax.swing.tree.TreeNode;
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        char[][] arr = new char[][]{
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'},
+                {'A', 'D', 'E', 'E'}
+        };
+        Solution solution = new Solution();
+        System.out.println(solution.exist(arr, "ABCC"));
+    }
+}
+
+class Solution {
+    //上下左右移动一步
+    int[][] move=new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    int[][] used;
+    public boolean exist(char[][] board, String word) {
+        used=new int[board.length][board[0].length];
+        //特判
+        if (word == null || word.length() == 0) {
+            return false;
+        }
+        //寻找首字母
+        char first = word.charAt(0);
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                //如果找到了首字母，开始回溯
+                if (board[i][j] == first) {
+                    //如果长度是1，成功！
+                    if (word.length() == 1) {
+                        return true;
+                    } else {
+                        //回溯,如果找到了一个序列，true
+                        if (backtrack(board, word, 0, i, j)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        //如果二重循环都遍历完了还没返回，说明匹配不到
+        return false;
+    }
+
+    public boolean backtrack(char[][] board, String word, int index, int i, int j) {
+        //返回条件一，当前两个字符不等
+        if (word.charAt(index) != board[i][j]) {
+            return false;
+        }
+        //返回条件二,遍历到了最后一个字符
+        if (index == word.length() - 1) {
+            return board[i][j] == word.charAt(index);
+        }
+        //当前元素，是word中的字母，继续回溯
+        //回溯执行前，做标记
+        used[i][j] = 1;
+        //注意下边的上下左右走是一个整体，都是进一步递归！
+        for (int k = 0; k < 4; k++) {
+            //更新下一步
+            int newi=i+move[k][0];
+            int newj=j+move[k][1];
+            //如果可以往下一步走
+            if (newi>=0&&newj>=0&&newi<=board.length - 1&&newj<=board[i].length - 1&&used[newi][newj]==0) {
+                //往下一步走
+                if (backtrack(board, word, index + 1, newi, newj)) {
+                    return true;
+                }
+            }
+        }
+        //回溯结束，擦除标记
+        used[i][j] = 0;
+        return false;
+    }
+}
