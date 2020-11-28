@@ -1,0 +1,63 @@
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+class Main {
+    public static void main(String[] args) {
+        ListNode node = new ListNode(3);
+        node.next=new ListNode(2);
+        node.next.next=new ListNode(0);
+        node.next.next.next=new ListNode(4);
+        node.next.next.next.next=node.next;
+        Solution solution = new Solution();
+        System.out.println(solution.detectCycle(node).val);
+    }
+}
+
+  class ListNode {
+      int val;
+      ListNode next;
+      ListNode(int x) {
+         val = x;
+         next = null;
+      }
+  }
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head==null||head.next==null){
+            return null;
+        }
+        //p1每次走一步
+        ListNode p1=head;
+        //p2每次走两步
+        ListNode p2=head;
+        while (p2!=null){
+            p1=p1.next;
+            p2=p2.next;
+            //不为空再走一步
+            if (p2!=null){
+                p2=p2.next;
+            }else {     //否则说明到头了
+                break;
+            }
+            //相遇了，有环
+            if (p1==p2){
+                break;
+            }
+        }
+        //到头了，没环
+        if (p2==null){
+            return null;
+        }
+        //把p1送回head
+        p1=head;
+        while (p1!=p2){
+            p1=p1.next;
+            p2=p2.next;
+        }
+        return p1;
+    }
+}
