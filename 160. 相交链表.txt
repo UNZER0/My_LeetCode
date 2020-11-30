@@ -1,0 +1,75 @@
+import java.util.Collections;
+import java.util.HashSet;
+
+public class Main2 {
+    public static void main(String[] args) {
+        ListNode listNode1 = new ListNode(4);
+        listNode1.next = new ListNode(1);
+        listNode1.next.next = new ListNode(8);
+        listNode1.next.next.next = new ListNode(4);
+        listNode1.next.next.next.next = new ListNode(5);
+        ListNode listNode2 = new ListNode(5);
+        listNode2.next = new ListNode(0);
+        listNode2.next.next = new ListNode(1);
+        listNode2.next.next.next = listNode1.next.next;
+        listNode2.next.next.next.next = listNode1.next.next.next;
+        listNode2.next.next.next.next.next = listNode1.next.next.next.next;
+        Solution solution = new Solution();
+        System.out.println(solution.getIntersectionNode(listNode1, listNode2).val);
+    }
+}
+
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
+}
+
+class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        //特判
+        if (headA == null || headB == null) {
+            return null;
+        }
+        int sumA=0;
+        int sumB=0;
+        ListNode tmpA=headA;
+        ListNode tmpB=headB;
+        //求A的长度
+        while (tmpA != null) {
+            sumA++;
+            tmpA = tmpA.next;
+        }
+        //求B的长度
+        while (tmpB != null) {
+            sumB++;
+            tmpB = tmpB.next;
+        }
+        //长度给headA，短的给headB
+        int tmp=sumA-sumB;
+        if (tmp<0){
+            tmp=-tmp;
+            ListNode t=headA;
+            headA=headB;
+            headB=t;
+        }
+        //长的先走sumA-sumB步
+        for (int i = 0; i < tmp; i++) {
+            headA=headA.next;
+        }
+        //然后同时走，边走边判断
+        while (headA!=null){
+            if (headA==headB){
+                return headA;
+            }
+            headA=headA.next;
+            headB=headB.next;
+        }
+        return null;
+    }
+}
