@@ -37,18 +37,24 @@ class Solution {
                 fast=fast.next;
             }
         }
-        //通过fast不空说明是奇数个
+        //fast不空说明是奇数个
         if (fast!=null){
+            //因此需要再走一步
             slow=slow.next;
         }
+        //来个头结点
         ListNode head2=slow;
         //反转后边的链表
         while (slow.next!=null){
             ListNode tmp=slow.next;
+            //断开
             slow.next=tmp.next;
+            //插入
             tmp.next=head2;
+            //更新头结点
             head2=tmp;
         }
+        //比较
         while (head2!=null){
             if (head.val!=head2.val){
                 return false;
