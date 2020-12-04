@@ -1,0 +1,140 @@
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+/*        LRUCache lruCache = new LRUCache(2);
+        lruCache.put(1, 1);
+        lruCache.put(2, 2);
+        System.out.println(lruCache.get(1));
+        lruCache.put(3, 3);
+        System.out.println(lruCache.get(2));
+        lruCache.put(4, 4);
+        System.out.println(lruCache.get(1));
+        System.out.println(lruCache.get(3));
+        System.out.println(lruCache.get(4));*/
+        LRUCache lruCache = new LRUCache(1);
+        lruCache.put(2, 1);
+        System.out.println(lruCache.get(2));
+    }
+}
+
+//双向链表节点
+class Node {
+    int key, val;
+    Node pre, next;
+
+    Node(int key,int val) {
+        this.val = val;
+        this.key = key;
+    }
+}
+
+//双向链表
+class DoubleList {
+    int length;
+    Node head, last;
+
+    //初始化
+    DoubleList() {
+        length = 0;
+        head = last = new Node(0, 0);
+    }
+
+    //向头部增加个结点
+    public void add(Node node) {
+        if (length == 0) {
+            head.next = node;
+            node.pre = head;
+            last = node;
+        } else {
+            node.next = head.next;
+            head.next.pre = node;
+            head.next = node;
+            node.pre = head;
+        }
+        length++;
+    }
+
+    //删除末尾元素节点
+    public Node removeLast() {
+        Node tmp = last;
+        last = last.pre;
+        last.next = null;
+        length--;
+        return tmp;
+    }
+
+    //删除节点
+    public void remove(Node node) {
+        if (node.next == null) {
+            removeLast();
+        } else {
+            node.next.pre = node.pre;
+            node.pre.next = node.next;
+            length--;
+        }
+    }
+
+    //获取链表长度
+    public int getLength() {
+        return length;
+    }
+}
+
+class LRUCache {
+    int capacity;
+    DoubleList doubleList;
+    HashMap<Integer, Node> hashMap;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        hashMap = new HashMap<>();
+        doubleList = new DoubleList();
+    }
+
+    public int get(int key) {
+        //不存在，返回-1
+        if (!hashMap.containsKey(key)) {
+            return -1;
+        } else {
+            //存在，找出该节点
+            Node node = hashMap.get(key);
+            System.out.println(node.key+"+++"+node.val);
+            //删除链表中的该节点
+            doubleList.remove(node);
+            //放到将该节点放到链表头部
+            doubleList.add(node);
+            //最后再返回
+            return node.val;
+        }
+    }
+
+    public void put(int key, int value) {
+        //链表有多长
+        int length = doubleList.getLength();
+        Node node = new Node(key, value);
+
+        //如果链表中已经有了该元素
+        if (hashMap.containsKey(key)) {
+            //取出旧的结点
+            Node nodeOld = hashMap.get(key);
+            //那就先删除旧结点
+            doubleList.remove(nodeOld);
+            //将该节点加入头部
+            doubleList.add(node);
+            //更新hashmap
+            hashMap.put(key, node);
+        } else {
+            //长度超过了容量
+            if (length >= capacity) {
+                //删除末尾结点
+                Node last = doubleList.removeLast();
+                hashMap.remove(last.key);
+            }
+            //更新hashmap中的值
+            hashMap.put(key, node);
+            //将该节点加入链表头部
+            doubleList.add(node);
+        }
+    }
+}
