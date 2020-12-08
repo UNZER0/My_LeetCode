@@ -1,0 +1,76 @@
+public class Main {
+    public static void main(String[] args) {
+        char[][] num = {
+                {'1', '1'},
+        };
+/*        char[][] num = {
+                {'1', '1', '0', '0', '0'},
+                {'1', '1', '0', '0', '0'},
+                {'0', '0', '1', '0', '0'},
+                {'0', '0', '0', '1', '1'}
+        };*/
+        Solution solution = new Solution();
+        System.out.println(solution.numIslands(num));
+    }
+}
+
+class Solution {
+    //更新上下左右的位置
+    int[][] move = {
+            {0, 1},
+            {0, -1},
+            {1, 0},
+            {-1, 0}
+    };
+    int m;      //长
+    int n;      //宽
+    char[][] num;
+
+    public int numIslands(char[][] grid) {
+        //特判
+        if (grid.length == 0) {
+            return 0;
+        }
+        int sum = 0;
+        m = grid.length;
+        n = grid[0].length;
+        num = grid;
+        //遍历二维数组
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                //找到1了，进行回溯
+                if (num[i][j] == '1') {
+                    backTrack(i, j);
+                    sum++;
+                }
+            }
+        }
+        //将统计结果返回
+        return sum;
+    }
+
+    public void backTrack(int i, int j) {
+        if (num[i][j] == '0') {
+            return;
+        }
+        //进入之前先改成0
+        num[i][j] = '0';
+        //上下左右回溯
+        for (int k = 0; k < 4; k++) {
+            int newI = move[k][0] + i;
+            int newJ = move[k][1] + j;
+            //如果能移动
+            if (canMove(newI, newJ)) {
+                backTrack(newI, newJ);
+            }
+        }
+    }
+
+    //能否移动？？
+    public boolean canMove(int i, int j) {
+        if (i < 0 || i >= m || j < 0 || j >= n) {
+            return false;
+        }
+        return true;
+    }
+}
