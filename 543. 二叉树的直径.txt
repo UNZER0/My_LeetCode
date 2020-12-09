@@ -1,0 +1,51 @@
+
+public class Main {
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(2);
+/*        treeNode.right = new TreeNode(2);
+        treeNode.left.left = new TreeNode(5);
+        treeNode.left.right = new TreeNode(5);*/
+        Solution solution = new Solution();
+        System.out.println(solution.diameterOfBinaryTree(treeNode));
+    }
+}
+
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+    }
+}
+
+class Solution {
+    int max;
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        back(root);
+        return max ;
+    }
+
+    //计算子树深度
+    public int back(TreeNode root) {
+        if (root==null){
+            return 0;
+        }
+        //左子树深度
+        int left=back(root.left);
+        //右子树深度
+        int right=back(root.right);
+        //如果左子树深度+右子树深度>最大值，更新
+        if (left+right>max){
+            max=left+right;
+        }
+        //返回左右子树深度中最深的那个，并加上当前节点头上的树枝
+        return Math.max(left,right)+1;
+    }
+}
