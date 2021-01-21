@@ -1,0 +1,29 @@
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] num = {1, 0, 3, 0};
+        Solution solution = new Solution();
+        int[] new_num = solution.productExceptSelf(num);
+        System.out.println(Arrays.toString(new_num));
+    }
+}
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int sum=1;
+        int[] ans=new int[nums.length];
+        //先求得左边的乘积
+        for (int i = 0; i < nums.length; i++) {
+            ans[i]=sum;
+            sum*=nums[i];
+        }
+        //在此基础上反向遍历，乘上右边的乘积
+        sum=1;
+        for (int i = nums.length-1; i >=0; i--) {
+            ans[i]*=sum;
+            sum*=nums[i];
+        }
+        return ans;
+    }
+}
