@@ -1,0 +1,65 @@
+public class Main {
+    public static void main(String[] args) {
+        String word = "apple";
+        String prefix = "app";
+        Trie obj = new Trie();
+        obj.insert(word);
+        boolean param_2 = obj.search(word);
+        boolean param_3 = obj.startsWith(prefix);
+        System.out.println(param_2);
+        System.out.println(param_3);
+    }
+}
+
+class Trie {
+    //成员变量：一个是否是单词的标志，包含26个Trie的数组
+    private boolean isWord;
+    private Trie[] num;
+
+    public Trie() {
+        isWord = false;
+        num = new Trie[26];
+    }
+
+    public void insert(String word) {
+        Trie root = this;
+        char[] chars = word.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            //如果没有就new个
+            if (root.num[chars[i] - 'a'] == null) {
+                root.num[chars[i] - 'a'] = new Trie();
+            }
+            //然后指向它
+            root = root.num[chars[i] - 'a'];
+        }
+        //最后将isword置为true
+        root.isWord=true;
+    }
+
+    //下边两端代码类似，区别是其中一个要判断是否是完整的单词
+    public boolean search(String word) {
+        Trie root = this;
+        char[] chars = word.toCharArray();
+        for (int i = 0; i < word.length(); i++) {
+            if (root.num[chars[i] - 'a'] != null){
+                root=root.num[chars[i] - 'a'];
+            }else {
+                return false;
+            }
+        }
+        return root.isWord;
+    }
+
+    public boolean startsWith(String prefix) {
+        Trie root = this;
+        char[] chars = prefix.toCharArray();
+        for (int i = 0; i < prefix.length(); i++) {
+            if (root.num[chars[i] - 'a'] != null){
+                root=root.num[chars[i] - 'a'];
+            }else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
