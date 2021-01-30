@@ -1,0 +1,46 @@
+public class Main {
+    public static void main(String[] args) {
+        char[][] matrix = {
+                {'0', '1', '1', '0', '1'},
+                {'1', '1', '0', '1', '0'},
+                {'0', '1', '1', '1', '0'},
+                {'1', '1', '1', '1', '0'},
+                {'1', '1', '1', '1', '1'},
+                {'0', '0', '0', '0', '0'},
+        };
+
+        Solution solution = new Solution();
+        System.out.println(solution.maximalSquare(matrix));
+    }
+}
+
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        //特判
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+        int length = matrix.length;
+        int width = matrix[0].length;
+        int[][] dp = new int[length][width];
+        //记录最大的dp，就是最大的边长
+        int max = 0;
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                //如果遇到1
+                if (matrix[i][j] == '1') {
+                    //对于第一行和第一列，dp为1
+                    if (i == 0 || j == 0) {
+                        dp[i][j] = 1;
+                    } else {
+                        //其他的取左边、上边、最上边最小的一个
+                        dp[i][j] = Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1]))+1;
+                    }
+                    //更新最大边
+                    max = Math.max(max, dp[i][j]);
+                }
+            }
+        }
+        return max*max;
+    }
+}
