@@ -1,0 +1,51 @@
+public class Main {
+    public static void main(String[] args) {
+        TreeNode treeNode = new TreeNode(3);
+        treeNode.left = new TreeNode(2);
+        treeNode.right = new TreeNode(3);
+        treeNode.left.right = new TreeNode(3);
+        treeNode.right.right = new TreeNode(1);
+        Solution solution = new Solution();
+        System.out.println(solution.rob(treeNode));
+    }
+}
+
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    public int rob(TreeNode root) {
+        int[] backtrace = backtrace(root);
+        return Math.max(backtrace[0],backtrace[1]);
+    }
+
+    public int[] backtrace(TreeNode root){
+        if (root==null){
+            return new int[2];
+        }
+        //操作
+        int[] num=new int[2];
+        int[] left=backtrace(root.left);
+        int[] right=backtrace(root.right);
+        num[0]=Math.max(left[0],left[1])+Math.max(right[0],right[1]);
+        num[1]=left[0]+right[0]+root.val;
+        return num;
+    }
+}
