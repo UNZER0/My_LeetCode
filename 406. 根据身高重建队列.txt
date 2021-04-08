@@ -1,0 +1,38 @@
+import org.omg.PortableServer.ForwardRequest;
+
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[][] people = {{3, 0}, {6, 0}, {7, 0},{5, 2}, {3, 4},{6, 2}, {5, 3},{2, 7}, {9, 0},{1, 9}};
+        Solution solution = new Solution();
+        System.out.println(solution.reconstructQueue(people));
+    }
+}
+
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        if (people == null || people.length == 0 || people[0].length == 0) {
+            return new int[1][2];
+        }
+        if (people.length == 1) {
+            return people;
+        }
+        //先按照身高降序排序，如果身高相同，那么按照k升序排序
+        Arrays.sort(people,((o1, o2) -> o1[0]==o2[0]?o1[1]-o2[1]:o2[0]-o1[0]));
+        //排完序后，从第二个元素起按照k插入到合适的位置
+        for (int i = 1; i < people.length; i++) {
+            //计算出有多少个前边的元素需要移动
+            int move=i-people[i][1];
+            int[] tmp=people[i];
+            int t=0;
+            int j = i;
+            for (; t<move ; j--) {
+                people[j]=people[j-1];
+                t++;
+            }
+            people[j]=tmp;
+        }
+        return people;
+    }
+}
