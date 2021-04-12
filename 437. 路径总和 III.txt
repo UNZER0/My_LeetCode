@@ -1,0 +1,66 @@
+import java.util.HashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(10);
+        root.left= new TreeNode(5);
+        root.right= new TreeNode(-3);
+        root.left.left= new TreeNode(3);
+        root.left.right= new TreeNode(2);
+        root.left.left.left= new TreeNode(3);
+        root.left.left.right= new TreeNode(-2);
+        root.left.right.right= new TreeNode(1);
+        root.right.right= new TreeNode(11);
+        Solution solution = new Solution();
+        System.out.println(solution.pathSum(root,8));
+    }
+}
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root==null){
+            return 0;
+        }
+        HashMap<Integer, Integer> prefixsum = new HashMap<>();
+        prefixsum.put(0,1);
+        return backtrace(root,prefixsum,0,targetSum);
+    }
+
+    public int backtrace(TreeNode root,HashMap<Integer, Integer> prefixsum,int prefix,int target){
+        if (root==null){
+            return 0;
+        }
+        int res=0;
+        //更新前缀和
+        prefix+=root.val;
+        //更新当前层所满足target的个数
+        res+=prefixsum.getOrDefault(prefix-target,0);
+        //更新map
+        prefixsum.put(prefix,prefixsum.getOrDefault(prefix,0)+1);
+        //进入子节点
+        res+=backtrace(root.left,prefixsum,prefix,target);
+        res+=backtrace(root.right,prefixsum,prefix,target);
+        //回溯后撤销map中的记录
+        prefixsum.put(prefix,prefixsum.get(prefix)-1);
+        return res;
+    }
+}
