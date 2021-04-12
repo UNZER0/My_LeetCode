@@ -1,0 +1,58 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+       String str="abab";
+        Solution solution = new Solution();
+        List<Integer> list = solution.findAnagrams(str, "ab");
+        System.out.println(list);
+    }
+}
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        //特判
+        if (s==null||p==null||s.length()==0||p.length()==0||p.length()>s.length()){
+            return new ArrayList<>();
+        }
+        List<Integer> list = new ArrayList<>();
+        //先将目标串中的元素频率统计出来
+        int[] windows=new int[26];
+        int[] target=new int[26];
+        for (int i = 0; i < p.length(); i++) {
+            target[p.charAt(i)-'a']++;
+        }
+        //统计初始窗口中元素的频率
+        for (int i = 0; i < p.length(); i++) {
+            windows[s.charAt(i)-'a']++;
+        }
+        //滑动窗口遍历整个字符串
+        int left=0;
+        int right=p.length()-1;
+        while (right<s.length()){
+            //如果两个数组相同
+            if (isSmae(windows,target)){
+                list.add(left);
+            }
+            //向右移动
+            right++;
+            if (right>=s.length()){
+                break;
+            }
+            windows[s.charAt(right)-'a']++;
+            windows[s.charAt(left++)-'a']--;
+        }
+        //返回
+        return list;
+    }
+    public boolean isSmae(int[] windows,int[] target){
+        for (int i = 0; i < windows.length; i++) {
+            if (windows[i]!=target[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
