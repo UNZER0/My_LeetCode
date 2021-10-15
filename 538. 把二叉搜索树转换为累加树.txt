@@ -1,0 +1,14 @@
+class Solution {
+    int last=0;
+    public TreeNode convertBST(TreeNode root) {
+        if(root==null){
+            return root;
+        }
+        //反向中序遍历
+        convertBST(root.right);
+        root.val+=last;
+        last=root.val;
+        convertBST(root.left);
+        return root;
+    }
+}
