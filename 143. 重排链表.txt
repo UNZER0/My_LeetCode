@@ -1,0 +1,65 @@
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head==null||head.next==null){
+            return;
+        }
+        // 首先将链表从中间分成两段
+        ListNode fast=head;
+        ListNode slow=head;
+        while(fast.next!=null&&fast.next.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        ListNode newHead=slow.next;
+        slow.next=null;
+        //然后将后半段逆序
+        newHead=reverse(newHead);
+        //最后合并
+        merge(head,newHead);
+    }
+
+    //头插法逆序（申请了头结点）
+    // private ListNode reverse(ListNode head){
+    //     if(head==null||head.next==null){
+    //         return head;
+    //     }
+    //     ListNode newHead=new ListNode();
+    //     newHead.next=head;
+    //     ListNode curr=head;
+    //     ListNode next=curr.next;
+    //     while(curr.next!=null){
+    //         curr.next=curr.next.next;
+    //         next.next=newHead.next;
+    //         newHead.next=next;
+    //         next=curr.next;
+    //     }
+    //     return newHead.next;
+    // }
+    //尾插法逆序,注意最后一次循环head已经指向null了，而tail正好指向head原来的位置，所以要返回tail
+    private ListNode reverse(ListNode head){
+        if(head==null||head.next==null){
+            return head;
+        }
+        ListNode tail=head;
+        head=head.next;
+        tail.next=null;
+        while(head!=null){
+            ListNode tmp=head.next;
+            head.next=tail;
+            tail=head;
+            head=tmp;
+        }
+        return tail;
+    }
+    //合并
+    private void merge(ListNode head1,ListNode head2){
+        while(head2!=null){
+            ListNode tmp=head2.next;
+            head2.next=head1.next;
+            head1.next=head2;
+
+            head1=head2.next;
+            head2=tmp;
+        }
+    }
+}

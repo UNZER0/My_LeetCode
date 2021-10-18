@@ -1,0 +1,23 @@
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        //双指针从后向前遍历，大的移到最后
+        int tmp=m+n-1;
+        for(int i=tmp;i>=0;i--){
+            //如果n为0时，说明数组2已经复制完成了，直接返回
+            if(n==0){
+                return;
+            }else if(m==0){  //如果m为0时，直接把数组2剩下部分复制到数组1，然后返回
+                nums1[i]=nums2[n-1];
+                n--;
+            }else{//都不为0        
+                if(nums1[m-1]>nums2[n-1]){
+                    nums1[i]=nums1[m-1];
+                    m--;
+                }else{
+                    nums1[i]=nums2[n-1];
+                    n--;
+                }
+            } 
+        }
+    }
+}
