@@ -1,0 +1,53 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> list = new ArrayList<Integer>();
+        //特判
+        if (matrix == null) {
+            return list;
+        }
+        //设置上下左右四个边界值，然后依次按照顺时针方向遍历，每次遍历完更新边界值，然后判断是否越界
+        int top=0;
+        int bottom=matrix.length-1;
+        int left=0;
+        int right=matrix[0].length-1;
+        while(true){
+            //从左到右遍历
+            for(int i=left;i<=right;i++){
+                list.add(matrix[top][i]);
+            }
+            //更新top值，并判断边界
+            top++;
+            if(top>bottom){
+                break;
+            }
+            //从上到下遍历
+            for(int i=top;i<=bottom;i++){
+                list.add(matrix[i][right]);
+            }
+            //更新right值，并判断边界
+            right--;
+            if(left>right){
+                break;
+            }
+            //从右到左遍历
+            for(int i=right;i>=left;i--){
+                list.add(matrix[bottom][i]);
+            }
+            //更新bottom值，并判断边界
+            bottom--;
+            if(top>bottom){
+                break;
+            }
+            //从下到上遍历
+            for(int i=bottom;i>=top;i--){
+                list.add(matrix[i][left]);
+            }
+            //更新left值，并判断边界
+            left++;
+            if(left>right){
+                break;
+            }
+        }
+        return list;
+    }
+}

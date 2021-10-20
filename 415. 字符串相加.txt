@@ -1,0 +1,26 @@
+class Solution {
+    public String addStrings(String num1, String num2) {
+        // 模拟列竖式加法，注意ASCII码，0是48、A是65、a是97,但是并不需要，减去'0'即可哈哈
+        int length=Math.max(num1.length(),num2.length());
+        StringBuilder sum=new StringBuilder();
+        int carry=0;
+        for(int i=0;i<length;i++){
+            //计算位加法值，如果短的那个到头了，就补0。记得减去'0'
+            int n1=num1.length()-1-i>=0?num1.charAt(num1.length()-1-i)-'0':0;
+            int n2=num2.length()-1-i>=0?num2.charAt(num2.length()-1-i)-'0':0;
+            int tmp=n1+n2+carry;
+            //求个位数值
+            int low=tmp%10;
+            //求进位
+            carry=tmp/10;
+            //累加sum
+            sum.append(low);
+
+        }
+        // 注意最后如果还有进位，要加进去
+        if(carry==1){
+            sum.append(carry);
+        }
+        return sum.reverse().toString();
+    }
+}

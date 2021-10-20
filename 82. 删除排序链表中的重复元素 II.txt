@@ -1,0 +1,30 @@
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        //特判
+        if(head==null||head.next==null){
+            return head;
+        }
+        //添加哑结点
+        ListNode dummy=new ListNode();
+        dummy.next=head;
+        //双指针
+        ListNode pre=dummy;
+        ListNode cur=head;
+        while(cur!=null){
+            //如果cur和后边的相同就一直向后走，要注意判断后边还有没有节点！
+            while(cur.next!=null&&cur.val==cur.next.val){
+                cur=cur.next;
+            }
+            //判断到底走没走，即有没有重复
+            //没走，没重复
+            if(pre.next==cur){
+                pre=pre.next;
+            }else{
+                //走了，重复了
+                pre.next=cur.next;
+            }
+            cur=pre.next;
+        }
+        return dummy.next;
+    }
+}
