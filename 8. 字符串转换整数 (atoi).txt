@@ -1,0 +1,48 @@
+class Solution {
+    public int myAtoi(String s) {
+        // 特判
+        if(s==null||s.length()==0){
+            return 0;
+        }
+        //默认为正数
+        boolean positive=true;
+        long sum=0;
+        int cur=0;
+        //数字前边只能是空格和正负号
+        //处理数字前边的字符
+        //空格
+        while(cur<s.length()&&s.charAt(cur)==' '){
+            cur++;
+        }
+        //越界就结束
+        if(cur>=s.length()){
+            return 0;
+        }
+        //正负号还是其他字符
+        if(s.charAt(cur)=='-'){
+            positive=false;
+            cur++;
+        }else if(s.charAt(cur)=='+'){
+            positive=true;
+            cur++;
+        }else if(s.charAt(cur)<'0'||s.charAt(cur)>'9'){
+            return 0;
+        }
+        //开始处理数字，如果数字中夹杂其他字符，直接结束
+        while(cur<s.length()&&s.charAt(cur)>='0'&&s.charAt(cur)<='9'){
+            sum=sum*10+s.charAt(cur)-'0';
+            //判断是否在范围内
+            long tmp=positive?sum:-1*sum;
+            if(tmp>Integer.MAX_VALUE){
+                return Integer.MAX_VALUE;
+            }
+            if(tmp<Integer.MIN_VALUE){
+                return Integer.MIN_VALUE;
+            }
+            cur++;
+        }   
+        //带上正负号
+        sum=positive?sum:-1*sum;
+        return (int)sum;
+    }
+}
