@@ -1,0 +1,13 @@
+class Solution extends SolBase {
+    public int rand10() {
+        while(true){
+            //生成1-49的随机数
+            int tmp=(rand7()-1)*7+rand7();
+            //只要1-40的随机数
+            if(tmp<=40){
+                //生成1-10的随机数
+                return (tmp-1)%10+1;
+            }
+        }   
+    }
+}
