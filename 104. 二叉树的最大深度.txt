@@ -1,0 +1,18 @@
+class Solution {
+    int max;
+    public int maxDepth(TreeNode root) {
+        mid(root,1);
+        return max;
+    }
+
+    private void mid(TreeNode root,int level){
+        if(root==null){
+            return;
+        }
+        mid(root.left,level+1);
+        if(max<level){
+            max=level;
+        }
+        mid(root.right,level+1);
+    }
+}

@@ -1,0 +1,20 @@
+class Solution {
+    int sum=1;
+    int ans;
+    public int kthLargest(TreeNode root, int k) {
+       mid(root,k);
+       return ans;
+    }
+
+    private void mid(TreeNode root,int k){
+        if(root==null){
+            return;
+        }
+        mid(root.right,k); 
+        if(sum==k){
+            ans=root.val;
+        }
+        sum++;
+        mid(root.left,k);
+    }
+}

@@ -1,0 +1,14 @@
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        //如果连根节点都没有，那就直接false了
+        if(root==null){
+            return false;
+        }
+        //走到叶子节点不能向下走了，直接就在叶子节点判断，也就意味着上边那个代码只会执行一次，就是只整个树的根节点那次
+        if(root.left==null&&root.right==null){
+            return root.val==targetSum;
+        }
+        //在中间节点，就继续向下走，只有左右路线有一条满足即可
+        return hasPathSum(root.left,targetSum-root.val)||hasPathSum(root.right,targetSum-root.val);
+    }
+}
